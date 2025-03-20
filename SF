@@ -1,9 +1,9 @@
-import pyxel
+import pyxel,time
 
 
 pyxel.init(300, 200)
 
-global x0, y0, x1, y1, v, v1, sur_sol, sur_sol1, sol , gravite, HP_0, HP_1, gameover,gameover1,cd
+global x0, y0, x1, y1, v, v1, sur_sol, sur_sol1, sol , gravite, HP_0, HP_1, gameover,gameover1,cd,last_time,last_time1
 x0: int = 10
 y0: int = 120
 x1: int = 250
@@ -20,7 +20,9 @@ gameover:bool = False
 gameover1:bool = False
 longueur: int = 46
 largeur:int = 70
-cd:int = 0
+cd:int = 1
+last_time = None
+last_time1 = None
 
 pyxel.load("res.pyxres")
 
@@ -38,7 +40,7 @@ def hit1(x1,y1) -> bool :
 
 
 def update():
-    global x0, y0, x1, y1, v, v1, sur_sol, sur_sol1, sol, gravite, HP_0, HP_1,gameover,gameover1,longueur, largeur,cd
+    global x0, y0, x1, y1, v, v1, sur_sol, sur_sol1, sol, gravite, HP_0, HP_1,gameover,gameover1,longueur, largeur,cd,last_time,last_time1
 #déplacement horizontal du 1er joueur
     if pyxel.btnv(pyxel.GAMEPAD1_AXIS_LEFTX) > 2000:
             x0 = x0 + 2
@@ -92,7 +94,7 @@ def update():
     
 
 def draw():
-    global x, y, x1, y1, v, v1, sur_sol, sur_sol1, sol, gravite, HP_0, HP_1, x0, y0 ,gameover,gameover1,longueur, largeur,cd
+    global x, y, x1, y1, v, v1, sur_sol, sur_sol1, sol, gravite, HP_0, HP_1, x0, y0 ,gameover,gameover1,longueur, largeur,cd,last_time,last_time1
     if gameover :
         pyxel.cls(11)
         if pyxel.btn(pyxel.KEY_R) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_START):
@@ -122,6 +124,8 @@ def draw():
         pyxel.rectb(x1, y1, longueur, largeur, 4)
         pyxel.blt(x0,y0,0,0,0,46,70)
         pyxel.blt(x1,y1,0,103,2,-46,70)
+        pyxel.rectb(x0, y0 - 30 ,longueur, 10, 3)
+        pyxel.rectb(x1, y1 - 30, longueur, 10, 4)
 
         #if pyxel.btnv(pyxel.GAMEPAD1_AXIS_LEFTY) > 2000:
         #    y0 = y0 + 10
@@ -129,23 +133,26 @@ def draw():
         # Attaque manette
         
         if pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
-            if hit(x0 , y0):
-                HP_1 = HP_1 - 10
-                print(HP_1)
+            current_time = time.time()
+            if last_time == None or (current_time - last_time) > cd:
+                last_time = current_time
+                if hit(x0 , y0):
+                    HP_1 = HP_1 - 10
+                    print(HP_1)
                 if HP_1 <= 0 :
                     gameover = True
         # Attaque clavier   
                 
-        cd = 80
-        if cd == 80:
-            if pyxel.btnp(pyxel.KEY_SPACE):
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            current_time1 = time.time()
+            if last_time1 == None or (current_time1 - last_time1) > cd:
+                last_time1 = current_time1
                 if hit1(x1, y1):
                     HP_0 = HP_0 - 10
                     print(HP_0)
-            if HP_0 <= 0 :
-                gameover1 = True
+                if HP_0 <= 0 :
+                    gameover1 = True
         
-                    
     
     
 pyxel.run(update, draw)
