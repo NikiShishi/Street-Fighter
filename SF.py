@@ -63,14 +63,17 @@ def hitprojectile() -> bool :
             return False 
         if (projectile[0] + 20 >= x1 ):
             return True
-
+    else :
+        return False
+        
 def hitprojectile1() -> bool :
     if pyxel.btnp(pyxel.KEY_X) == False :
-        if shield == True :
+        if shield1 == True :
             return False 
-        if (projectile1[0] <= x0 + longueur):
+        if (projectile1[0] <= x0 + longueur ):
             return True
-
+    else :
+        return False
         
 
 
@@ -177,6 +180,14 @@ def draw():
         pyxel.rect(x1, y1 - 30, HP_1, 10, 4)
         pyxel.rectb(x1, y1 - 30 ,longueur, 10, 4)
 
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_A):
+            shield1 = True
+            pyxel.rect(x0 + 46, y0 , 10,70, 10)
+            
+        
+        if pyxel.btn(pyxel.KEY_T):
+            shield = True
+            pyxel.rect(x1 - 10, y1 , 10,70, 10)
 
         if pyxel.btnp(pyxel.GAMEPAD1_BUTTON_X):
             if len(projectile) < 1 :
@@ -187,14 +198,13 @@ def draw():
                 projectile[0] += 2
                 pyxel.rect(projectile[0], yp + 20, 20, 10 , 1)
                 pyxel.blt(projectile[0] , yp + 20 , 0 ,213,8,20,12)
+                if (shield == True and projectile[0] + 20 == x1 ):
+                    projectile.remove(projectile[0])
                 if hitprojectile():
                     HP_1 -= damage
                     projectile.remove(projectile[0])
                     if HP_1 <= 0 :
-                        gameover = True
-                if (shield == True and projectile[0] + 20 == x1 - 10 ):
-                    projectile.remove(projectile[0])
-                    
+                        gameover = True       
             else :
                 projectile.remove(t)
             
@@ -206,26 +216,20 @@ def draw():
             if projectile1[0] < 280 :
                 projectile1[0] -= 2
                 pyxel.rect(projectile1[0], yp + 20, 20, 10 , 1)
-                pyxel.blt(projectile1[0] , yp1 + 20 , 0 ,222,25,19,15)
+                pyxel.blt(projectile1[0] , yp1 + 20 , 0 ,216,25,21,15)
+                if (shield == True and projectile1[0] == x0 + longueur + 20 ):
+                    projectile1.remove(projectile1[0])
                 if hitprojectile1():
                     HP_0 -= damage
                     projectile1.remove(projectile1[0])
                     if HP_0 <= 0 :
                         gameover = True
-                if (shield == True and projectile1[0] == x0 + longueur + 20 ):
-                    projectile1.remove(projectile1[0])
+                
                     
             else :
                 projectile1.remove(t)
 
-        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_A):
-            shield1 = True
-            pyxel.rect(x0 + 46, y0 , 10,70, 10)
-            
         
-        if pyxel.btn(pyxel.KEY_T):
-            shield = True
-            pyxel.rect(x1 - 10, y1 , 10,70, 10)
 
         # Attaque 1 manette
         if pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
