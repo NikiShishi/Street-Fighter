@@ -3,7 +3,8 @@ import pyxel,time
 pyxel.init(300,200)
 
 global x0, y0, x1, y1, yp, yp1 
-global v, v1, sur_sol, sur_sol1,screen, sol, gravite, HP_0, HP_1, gameover ,gameover1 ,cd ,last_time ,last_time1 ,damage ,shield1, VITESSE_PROJECTILE ,projectile , shield ,projectile1
+global v, v1, sur_sol, sur_sol1,screen, sol, gravite, HP_0, HP_1, gameover ,gameover1 ,cd ,damage ,shield1, VITESSE_PROJECTILE ,projectile , shield ,projectile1
+global last_time ,last_time1,last_timep, last_timep1
 x0: int = 10
 y0: int = 120
 x1: int = 250
@@ -13,7 +14,7 @@ yp1: int = 0
 gravite: int = 0.5
 sol: int = 120
 v: int = 0
-v1: int = 0
+v1: int = 0    
 VITESSE_PROJECTILE: int = 2
 sur_sol: int =  True
 sur_sol1: int = True
@@ -26,6 +27,8 @@ largeur:int = 70
 cd:int = 0.3
 last_time = None
 last_time1 = None
+last_timep = None
+last_timep1 = None
 damage: int = 6
 projectile = []
 projectile1 = []
@@ -79,8 +82,8 @@ def hitprojectile1() -> bool :
 
 def update():
     global x0, y0, x1, y1, yp, yp1
-    global v, v1, sur_sol, screen,sur_sol1, sol, gravite, HP_0, HP_1,gameover ,shield1,gameover1 ,longueur, largeur ,cd,last_time ,last_time1 ,damage ,VITESSE_PROJECTILE ,projectile ,shield ,projectile1
-
+    global v, v1, sur_sol, screen,sur_sol1, sol, gravite, HP_0, HP_1,gameover ,shield1,gameover1 ,longueur, largeur ,cd ,damage ,VITESSE_PROJECTILE ,projectile ,shield ,projectile1
+    global last_time ,last_time1,last_timep, last_timep1
     shield = False
     shield1 = False
 
@@ -131,18 +134,19 @@ def update():
     #Les bords 
     if x0 < 0:
         x0 = 0
-    elif x0 > 280:
-        x0 = 280
+    elif x0 > 250:
+        x0 = 250
     if x1 < 0:
         x1 = 0
-    elif x1 > 280:
-        x1 = 280
+    elif x1 > 250:
+        x1 = 250
     if pyxel.btn(pyxel.KEY_RETURN):
         screen = False 
 
 def draw():
     global x0, y0, x1, y1, yp, yp1 
-    global v, v1, sur_sol,screen, sur_sol1, sol, gravite, HP_0, HP_1, gameover ,gameover1 ,cd ,last_time ,last_time1 ,damage ,shield1, VITESSE_PROJECTILE ,projectile , shield ,projectile1
+    global v, v1, sur_sol,screen, sur_sol1, sol, gravite, HP_0, HP_1, gameover ,gameover1 ,cd ,damage ,shield1, VITESSE_PROJECTILE ,projectile , shield ,projectile1
+    global last_time ,last_time1,last_timep ,last_timep1
     if screen == True : 
         pyxel.cls(1)    
     else : 
